@@ -1,7 +1,15 @@
 local redis = require("resty.redis")
 
+local unpack = unpack
+local ipairs = ipairs
+local rawget = rawget
 local assert = assert
 local setmetatable = setmetatable
+
+local ok, new_tab = pcall(require, "table.new")
+if not ok or type(new_tab) ~= "function" then
+    new_tab = function (narr, nrec) return {} end
+end
 
 
 local _M = {
@@ -67,7 +75,56 @@ local function keepalive(self, redis)
 end
 
 
+function _M:init_pipeline(n)
+    self.reqs = new_tab(n or 4, 0)
+end
+
+
+function _M.cancel_pipeline(self)
+    self.reqs = nil
+end
+
+
+function _M.commit_pipeline(self)
+    local reqs = rawget(self, "reqs")
+    if not reqs then
+        return nil, "no pipeline"
+    end
+
+    self.reqs = nil
+
+    local red, err = connect(self)
+    if not red then
+        return nil, err
+    end
+
+    red:init_pipeline()
+
+    for _, req in ipairs(reqs) do
+        red[req.cmd](red, unpack(req.args))
+    end
+
+    local results, err = red:commit_pipeline()
+    if not results then
+        return nil, err
+    end
+
+    keepalive(self, red)
+
+    return results
+end
+
+
 local function do_cmd(self, cmd, ...)
+    local reqs = rawget(self, "reqs")
+    if reqs then
+        reqs[#reqs + 1] = {
+            cmd  = cmd,
+            args = {...},
+        }
+        return
+    end
+
     local red, err = connect(self)
     if not red then
         return nil, err
