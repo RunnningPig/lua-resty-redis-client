@@ -98,7 +98,7 @@ function _M.commit_pipeline(self)
         return nil, err
     end
 
-    red:init_pipeline()
+    red:init_pipeline(#reqs)
 
     for _, req in ipairs(reqs) do
         red[req.cmd](red, unpack(req.args))
