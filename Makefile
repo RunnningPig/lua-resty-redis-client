@@ -22,3 +22,9 @@ help:
 .PHONY: lint
 lint:
 	luacheck -q lib
+
+
+### test : Run the test case
+.PHONY: test
+test:
+	prove -I./ -r t/
