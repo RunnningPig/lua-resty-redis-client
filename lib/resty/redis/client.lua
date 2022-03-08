@@ -142,6 +142,7 @@ end
 
 
 function _M.new(opts)
+    opts = opts or {}
     return setmetatable({
         host      = opts.host or "127.0.0.1",
         port      = opts.port or 6379,
