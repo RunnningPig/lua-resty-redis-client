@@ -12,6 +12,7 @@ lua-resty-redis-client - Wrapper for [lua-resty-redis](https://github.com/openre
   - [init_pipeline](https://github.com/RunnningPig/lua-resty-redis-client#init_pipeline)
   - [commit_pipeline](https://github.com/RunnningPig/lua-resty-redis-client#commit_pipeline)
   - [cancel_pipeline](https://github.com/RunnningPig/lua-resty-redis-client#cancel_pipeline)
+- [Installation](https://github.com/RunnningPig/lua-resty-redis-client#installation)
 
 # Description
 
@@ -92,9 +93,7 @@ http://redis.io/commands
 
 You need to check out this Redis command reference to see what Redis command accepts what arguments.
 
-The Redis command arguments can be directly fed into the 
-corresponding method call. For example, the "GET" redis command accepts a
- single key argument, then you can just call the "get" method like this:
+The Redis command arguments can be directly fed into the corresponding method call. For example, the "GET" redis command accepts a single key argument, then you can just call the "get" method like this:
 
 ```lua
     local res, err = red:get("key")
@@ -184,4 +183,10 @@ If the redis object is not in the Redis pipelining mode, then this method is a n
 
 [Back to TOC](https://github.com/RunnningPig/lua-resty-redis-client#table-of-contents)
 
+# Installation
 
+```shell
+$ luarocks install lua-resty-redis-client
+```
+
+[Back to TOC](https://github.com/RunnningPig/lua-resty-redis-client#table-of-contents)
