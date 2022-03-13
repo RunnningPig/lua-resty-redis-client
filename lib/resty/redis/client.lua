@@ -13,7 +13,7 @@ end
 
 
 local _M = {
-    VERSION = "0.2.0"
+    VERSION = "0.2.1"
 }
 
 local mt = {__index = _M}
